@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+a:link {
+	color: #0566A3;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #0566A3;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #0566A3;
+	text-decoration: underline;
+}
+
+body {
+	background: #fff;
+}
+
+.blueone {
+	border-collapse: collapse;
+}
+
+.blueone th {
+	padding: 10px;
+	color: #E89EBA;
+	border-bottom: 3px solid #E89EBA;
+	text-align: left;
+}
+
+.blueone td {
+	color: #1B8BB8;
+	padding: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+.blueone td:hover {
+	background: #DCEBF1;
+	color: #0566A3;
+}
+
+caption {
+	font-size: 200%;
+	color: #292C47;
+}
+
+#cha {
+	margin: auto;
+	display: block;
+	z-index: -1;
+}
+	
+#table {
+	margin: auto;
+}
+</style>
+
+<meta charset="UTF-8">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#moveleft').click(function() {
+			$('#table').animate({
+			'marginLeft' : "-=500px" //moves left
+			});
+			$('#table').css("float","left")
+			<!-- $('#cha').css("display", "block"); -->
+		});
+	});
+	</script>
+</head>
+<body>
+
+	<table class="blueone" , id="table">
+		<caption>
+			MOVIE RANK
+			<button id="moveleft">Click!</button>
+		</caption>
+
+		<tr>
+			<th>순위</th>
+			<th style="text-align: center;">영화제목</th> {% for value in values %}
+		<tr>
+			<td>{{ value.rank }}위</td>
+			<td style="text-align: center;"><a href={{
+				value.link }} target="_blank">{{ value.name }}</a></td>
+		</tr>
+		{% endfor %}
+	</table>
+
+  <center id="cha">
+    <h1>{{ title }}</h1>
+
+    <canvas id="chart" width="900" height="600"></canvas>
+    <script>
+      // bar chart data
+      var barData = {
+        labels : [
+          {% for genre in genres %}
+            "{{ genre.genre }}",
+          {% endfor %}
+        ],
+
+        datasets : [{
+          fillColor: "rgba(151,187,205,0)",
+          strokeColor: "rgba(151,187,205,1)",
+          pointColor: "rgba(151,187,205,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(151,187,205,1)",
+          bezierCurve : false,
+          data : [
+	    {% for genre in genres %}
+              {{ genre.count }},
+            {% endfor %}]
+          }
+	]
+      }
+
+      Chart.defaults.global.animationSteps = 50;
+      Chart.defaults.global.tooltipYPadding = 16;
+      Chart.defaults.global.tooltipCornerRadius = 0;
+      Chart.defaults.global.tooltipTitleFontStyle = "normal";
+      Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+      Chart.defaults.global.animationEasing = "easeOutBounce";
+      Chart.defaults.global.responsive = false;
+      Chart.defaults.global.scaleLineColor = "black";
+      Chart.defaults.global.scaleFontSize = 16;
+
+      // get bar chart canvas
+      var mychart = document.getElementById("chart").getContext("2d");
+
+      steps = 10
+      max = {{ max }}
+      var LineChartDemo = new Chart(mychart).Line(barData, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: Math.ceil(max / steps),
+        scaleStartValue: 0,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        bezierCurve: false,
+      });
+
+    </script>
+  </center>
+</body>
+</html>

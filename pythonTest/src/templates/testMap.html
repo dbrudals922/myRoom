@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>우리는 얼마나 많이 환경을 해치고 있을까요?</title>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+	rel="stylesheet" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap"
+	rel="stylesheet">
+
+<script
+	src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<style>
+.wrap {
+	position: relative;
+	padding: 2%;
+}
+
+.container {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.chart {
+	position: relative;
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+	transition: 0.3s;
+}
+
+span.center {
+	background: #fff;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 100px;
+	font-size: 15px;
+	transform: translate(-50%, -50%);
+}
+
+button {
+	width: 80px;
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+}
+</style>
+<style>
+body{
+	font-family: "Noto Serif KR" !important
+}
+</style>
+
+</head>
+<body>
+	<!-- 
+	<select class="form-select" aria-label="Default select example">
+		<option selected>Open this select menu</option>
+		<option value="1">One</option>
+		<option value="2">Two</option>
+		<option value="3">Three</option>
+	</select>
+-->
+	<div class="container-lg" style="margin-top: 40px;">
+		<div class="row">
+			<div class="col" style="padding-right: 0;">
+				<select class="form-select form-select-lg mb-3"
+					aria-label=".form-select-lg example" id="location-select"
+					style="width: 400px;" onchange="optionChanged()">
+					<option selected>선택하세요</option>
+					<option value="1">이현고 -> 서울대</option>
+					<option value="2">이현고 -> 해운대</option>
+					<option value="3">이현고 -> 설봉공원</option>
+					<option value="4">이현고 -> 롯데타워</option>
+				</select> <select class="form-select form-select" aria-label=".form-select"
+					id="ride-select" style="width: 400px;" onchange="onChanged()">
+					<option selected>선택하세요</option>
+					<option value="1" disabled>대중교통</option>
+					<option value="2" disabled>자동차</option>
+					<option value="3" disabled>자전거</option>
+					<option value="4" disabled>도보</option>
+				</select>
+
+				<div style="padding-top: 40px;">
+					<canvas id="myChart" width="280px;" style="display: none;"></canvas>
+				</div>
+				<script>
+				const ctx = document.getElementById('myChart').getContext('2d');
+				const data = {
+						  labels: [
+						    '서울대',
+						    '해운대',
+						    '설봉공원',
+						    '롯데타워'
+						  ],
+						  datasets: [{
+						    label: 'My First Dataset',
+						    
+						    data: [
+						    	{% for n in nums%}
+						    		{{ n }},
+						    		{%endfor%}
+						    	],
+						    backgroundColor: [
+						      'rgb(114, 27, 101)',
+						      'rgb(184, 13, 87)',
+						      'rgb(248, 97, 90)',
+						      'rgb(255, 216, 104)'
+						    ],
+						    hoverOffset: 4
+						  }],
+						};
+						// </block:setup>
+
+						// <block:config:0>
+						const config = {
+						  type: 'doughnut',
+						  data: data,
+						  options:{
+							 
+						  	responsive: false,
+						  	plugins:{
+							  title:{
+								  display:true,
+								  text: '자동차에 따른 장소별 이산화탄소 배출량',
+							  },
+						  	}
+						  },
+						  animation:{
+							  animateScale: false
+						  }
+						};
+						var myDoughnutChart = new Chart(ctx, config);
+				</script>
+
+				<div class='wrap' id="wrap"
+					style="display: none; padding-top: 50px;">
+					<span>탄소발자국</span>
+					<div class='container'>
+						<div class="chart doughnut1">
+							<span class="center" id="center"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col" style="padding-right: 20%" style="width: 900px;">
+				<img id="map-image" style="max-width:150%; max-height: 150%">
+			</div>
+
+		</div>
+	</div>
+	<footer>
+		<div style="position: absolute; right: 20px; bottom: 15px; text-align:right; font-size: 13px;">
+			<a>10805&nbsp양찬현 </a>
+			<br>
+			<a>11016&nbsp유경민</a>
+			<br>
+			<br>
+			<br>
+			<a>탄소 발자국에 대한 여러 정보를 알아보고 싶다면?&nbsp&nbsp&nbsp&nbsp&nbsp>>>>>>&nbsp&nbsp&nbsp&nbsp&nbsp</a>
+			<a href="https://www.kotems.or.kr/app/kotems/forward?pageUrl=/kotems/ptl/emissionstat/total/KotemsPtlEmissionstatTotalEmissionLs&topmenu1=02&topmenu2=01&topmenu3=02
+			" target="_blank">https://www.kotems.or.kr/</a>
+			<br>
+			<a>전 세계적 이산화탄소 소비량이 어느 정도인지 궁금하다면?&nbsp&nbsp&nbsp&nbsp&nbsp>>>>>>&nbsp&nbsp&nbsp&nbsp&nbsp</a>
+			<a href="https://www.gihoo.or.kr/portal/kr/biz/footprint.do" target="_blank">https://www.gihoo.or.kr/portal/kr/biz/footprint.do</a>
+			<br>
+			<a>온실가스 배출량의 추가적인 정보가 궁금하다면?&nbsp&nbsp&nbsp&nbsp&nbsp>>>>>>&nbsp&nbsp&nbsp&nbsp&nbsp</a>
+			<a href="https://yearbook.enerdata.co.kr/co2/emissions-co2-data-from-fuel-combustion.html" target="_blank">https://yearbook.enerdata.co.kr/co2/emissions-co2-data-from-fuel-combustion.html</a>
+		
+		</div>
+	</footer>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		function optionChanged() {
+			const select = document.getElementById('location-select');
+			const select2 = document.getElementById('ride-select');
+			select2.options[0].selected = 'true';
+			
+			document.getElementById("map-image").style.display = 'none';
+			document.getElementById("myChart").style.display = 'none';
+			document.getElementById("wrap").style.display = 'none';
+			
+			var j = select.options[select.selectedIndex];
+			if (j.value == "0") {
+				for (i = 0; i < select2.options.length; i++) {
+					select2.options[i].setAttribute("disabled", "true");
+				}
+			}
+			if (j.value == "1" || j.value == "3") {
+				for (i = 0; i < select2.options.length; i++) {
+					select2.options[i].removeAttribute("disabled");
+					
+				}
+			}
+			if (j.value == "2" || j.value == "4") {
+				for (i = 0; i < select2.options.length; i++) {
+					select2.options[i].removeAttribute("disabled");
+					
+				}
+				select2.options[4].setAttribute("disabled", "true");
+			}
+		}
+
+		function onChanged() {
+			const select = document.getElementById('location-select');
+			const select2 = document.getElementById('ride-select');
+			var img = document.getElementById("map-image");
+			var m = select.options[select.selectedIndex];
+			var n = select2.options[select2.selectedIndex];
+			const num=null;
+			
+			
+			if (select2.selectedIndex > 0){
+				if (m.value=='1'){
+					img.src="https://github.com/dbrudals/dbrudals.github.com/blob/master/images/map/서울대_"+n.text+'.PNG?raw=true';
+					const num = {{ co2List[0] }};
+					makeChart(Math.ceil((Number(num[n.value-1])/150)*100), chart1, '#57CC99')
+					document.getElementById("center").innerHTML=num[n.value-1]+"kg";
+				}
+				if(m.value=='2'){
+					img.src="https://github.com/dbrudals/dbrudals.github.com/blob/master/images/map/해운대_"+n.text+'.PNG?raw=true';
+					const num = {{ co2List[1] }};
+					makeChart(Math.ceil((Number(num[n.value-1])/150)*100), chart1, '#57CC99')
+					document.getElementById("center").innerHTML=num[n.value-1]+"kg";
+				}
+				if(m.value=='3'){
+					img.src="https://github.com/dbrudals/dbrudals.github.com/blob/master/images/map/설봉공원_"+n.text+'.PNG?raw=true';
+					const num = {{ co2List[2] }};
+					makeChart(Math.ceil((Number(num[n.value-1])/150)*100), chart1, '#57CC99')
+					document.getElementById("center").innerHTML=num[n.value-1]+"kg";
+				}
+				if(m.value=='4'){
+					img.src="https://github.com/dbrudals/dbrudals.github.com/blob/master/images/map/롯데타워_"+n.text+'.PNG?raw=true';
+					const num = {{ co2List[3] }};
+					makeChart(Math.ceil((Number(num[n.value-1])/150)*100), chart1, '#57CC99')
+					document.getElementById("center").innerHTML=num[n.value-1]+"kg";
+				}
+				img.style.display = 'block';
+				
+			}
+			else {
+				img.style.display = 'none';
+			}
+			
+			
+			myDoughnutChart.destroy();
+			myDoughnutChart = new Chart(ctx, config);
+			document.getElementById("myChart").style.display = 'block';
+			document.getElementById("wrap").style.display = 'block';
+			
+		}
+	</script>
+	<script>
+	const chart1 = document.querySelector('.doughnut1');
+
+	const makeChart = (percent, classname, color) => {
+	  let i = 1;
+	  let chartFn = setInterval(function() {
+	    if (i < percent) {
+	      colorFn(i, classname, color);
+	      i++;
+	    } else {
+	      clearInterval(chartFn);
+	    }
+	  }, 10);
+	}
+
+	const colorFn = (i, classname, color) => {
+	  classname.style.background = "conic-gradient(" + color + " 0% " + i + "%, #dedede " + i + "% 100%)";
+	}
+
+	const replay = () => {
+	  makeChart(80, chart1, '#57CC99 ');
+	}
+	</script>
+
+</body>
+</html>

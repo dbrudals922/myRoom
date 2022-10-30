@@ -1,89 +1,60 @@
 <template>
   <div class="container-fluid py-4">
-    <div class="row">
-      <div class="col-12">
-        <div class="card my-4">
-          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div
-              class="bg-gradient-success shadow-success border-radius-lg pt-4 pb-3"
-            >
-              <h6 class="text-white text-capitalize ps-3">Custom</h6>
-            </div>
+    <div class="page-header min-height-300 border-radius-xl mt-4" style="
+        background-image: url('https://health.chosun.com/site/data/img_dir/2022/06/20/2022062001930_0.jpg');
+      ">
+      <span class="mask bg-gradient-light opacity-6"></span>
+    </div>
+    <div class="card card-body mx-3 mx-md-4 mt-n6">
+      <div class="row" style="margin: 2%;">
+        <!--
+          <div class="col-12">
+              <h3>Login</h3>
+              <select v-model="localselected">
+                <option v-for="option in localOptions" :value="option.value">
+                  {{ option.text }}
+                </option>
+              </select>
+
+              <div>Selected: {{ localselected }}</div>3
           </div>
-          <div class="card-body px-0 pb-2">
-            <div class="table-responsive p-0">
-              <table class="table align-items-center mb-0">
-                <thead>
-                  <tr>
-                    <th
-                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Name
-                    </th>
-                    <th
-                      class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                    >
-                      Class
-                    </th>
-                    <th
-                      class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                    >
-                      Status
-                    </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="o in customList" :key="o.name">
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">{{o.name}}</h6>
-                          <p class="text-xs text-secondary mb-0">
-                            {{o.type}}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <p class="text-xs font-weight-bold mb-0">implement: [ {{o.clazz}} ]</p>
-                      <p class="text-xs text-secondary mb-0">dvo: [ {{o.dvo}} ]</p>
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <span class="badge badge-sm bg-gradient-success"
-                        >Enable</span
-                      >
-                    </td>
-                    <td class="align-middle text-center text-sm">
-                      <a
-                        @click="openModal(o)"
-                        class="badge badge-sm bg-gradient-info"
-                      >
-                        Edit
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+          <div class="col-12">
+              <select v-model="ageselected">
+                <option v-for="option in ageOptions" :value="option.value">
+                  {{ option.text }}
+                </option>
+              </select>
+  
+              <div>Selected: {{ ageselected }}</div>
+          </div>
+          <div class="col-12">
+            <select v-model="selected">
+              <option v-for="option in Options" :value="option.value">
+                {{ option.text }}
+              </option>
+            </select>
+          </div>
+
+          <div>Selected: {{ selected }}</div>
+-->
+
+        <div class="col-12">
+          <div>
+            <paginated-list :list-array="pageArray" :pageSize="1" />
           </div>
         </div>
       </div>
     </div>
+
+
     <SampleDialog @close="closeModal" v-if="modal" maxWidth=600 transition="custom-from-bottom-transition">
       <template v-slot:header>
         {{messageTitle}}
       </template>
-      
+
       <!-- default 슬롯 콘텐츠 -->
-      <json-viewer
-        :value="message"
-        :expand-depth=5
-        boxed
-        expanded
-        show-double-quotes>
+      <json-viewer :value="message" :expand-depth=5 boxed expanded show-double-quotes>
       </json-viewer>
-      
       <template v-slot:footer>
         <button type="button" class="btn btn-dark" @click="closeModal">Close</button>
       </template>
@@ -95,48 +66,78 @@
 import axios from 'axios';
 import JsonViewer from 'vue-json-viewer';
 import SampleDialog from "../examples/SampleDialog.vue";
+import Textarea from "../components/MaterialTextarea.vue";
+import Radio from "../components/MaterialRadio.vue";
+import Checkbox from "../components/MaterialCheckbox.vue";
+import Button from "../components/MaterialButton.vue";
+
+import questions from "./questions.js";
+import PaginatedList from './PaginatedList';
 
 export default {
   name: "Filters",
+  props: [],
   data() {
     return {
-      users: [],
-      connectorList: [],
-      senderReceiverList: [],
-      customList: [],
-      errors: [],
-      modal: false,
-      messageTitle: "",
-      message: ""
+      pageArray: [],
+      localselected: '11',
+      localOptions: [
+        { text: '서울', value: '11' },
+        { text: '부산', value: '26' },
+        { text: '대구', value: '27' },
+        { text: '인천', value: '28' },
+        { text: '광주', value: '29' },
+        { text: '대전', value: '30' },
+        { text: '울산', value: '31' },
+        { text: '경기', value: '41' },
+        { text: '강원', value: '42' },
+        { text: '충북', value: '43' },
+        { text: '충남', value: '44' },
+        { text: '전북', value: '45' },
+        { text: '전남', value: '46' },
+        { text: '경북', value: '47' },
+        { text: '경남', value: '48' },
+        { text: '제주', value: '49' },
+      ],
+      ageselected: 'a',
+      ageOptions: [
+        { text: "10대 미만", value: 'a' },
+        { text: "10대", value: 'b' },
+        { text: "20대", value: 'c' },
+        { text: "30대", value: 'd' },
+        { text: "40대", value: 'e' },
+        { text: "50대", value: 'f' },
+        { text: "60대 이상", value: 'g' },
+      ],
+      selected: 'n',
+      Options: [
+        { text: "선택 안함", value: 'n' },
+        { text: "남성", value: 'm' },
+        { text: "여성", value: 'w' },
+      ],
+      questions: questions // import js file
     };
   },
-  mounted() {
-    this.initLoad();
+  created() {
+    // console.log(questions);
+    this.pageArray = questions;
   },
   methods: {
-    openModal(item) {
-      this.message = item.values;
-      this.messageTitle = item.name;
-      this.modal = true;
+    clicked: function (e) {
+      console.log(e.target.id); // spelling
     },
-    closeModal() {
-      this.modal = false;
+    callback: function (page) {
+      console.log(`Page ${page} was selected. Do something about it`);
     },
-    initLoad() {
-    	axios.get('http://apis.data.go.kr/6410000/busrouteservice/getBusRouteList?serviceKey=0AFbuL2vD3w%2BmPYxv7wngHxV15sYkff8KFECgmkncga%2FlYSFookF8j870zhAqNxb4e7yZ99r0xH%2BgDE7M7wf8A%3D%3D&keyword=11')
-        .then(response => (response.data))
-        .then(result => {
-   		  console.log(result);
-   		  this.users=result;
-        })
-        .catch(e => {
-          this.errors.push(e)
-        })
-	  }
   },
   components: {
     JsonViewer,
-    SampleDialog
+    SampleDialog,
+    Textarea,
+    Checkbox,
+    Radio,
+    Button,
+    PaginatedList,
   },
 };
 </script>

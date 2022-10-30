@@ -89,7 +89,7 @@
           :aria-controls="''"
           v-bind:collapse="false"
           collapseRef="Filters"
-          navText="Bus"
+          navText="MBTI"
         >
           <template v-slot:icon>
             <i class="material-icons-round opacity-10 fs-5">credit_card</i>

@@ -28,7 +28,7 @@
           <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
             <mini-statistics-card
               :title="{ text: 'New Clients', value: '3,462' }"
-              detail="<span class='text-danger text-sm font-weight-bolder'>-2%</span> than yesterday"
+              detail="<span class='text-danger text-sm font-weight-bolder'>-15%</span> than yesterday"
               :icon="{
                 name: 'person',
                 color: 'text-white',
@@ -126,7 +126,8 @@
         </div>
       </div>
     </div>
-
+    
+<!--
     <div class="row">
       <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
         <project-card
@@ -230,7 +231,9 @@
         </timeline-list>
       </div>
     </div>
+    -->
   </div>
+  
 </template>
 <script>
 import ChartHolderCard from "./components/ChartHolderCard.vue";

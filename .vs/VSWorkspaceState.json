@@ -1,0 +1,17 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\maven_project\\src",
+    "\\maven_project\\src\\main",
+    "\\maven_project\\src\\main\\java",
+    "\\maven_project\\src\\main\\java\\com",
+    "\\maven_project\\src\\main\\java\\com\\swh",
+    "\\maven_project\\src\\main\\java\\com\\swh\\watchFolderService",
+    "\\portfolio2",
+    "\\portfolio2\\p-frontend",
+    "\\portfolio2\\p-frontend\\src",
+    "\\portfolio2\\p-frontend\\src\\views"
+  ],
+  "SelectedNode": "\\portfolio2\\p-frontend\\src\\views\\Filters.vue",
+  "PreviewInSolutionExplorer": false
+}

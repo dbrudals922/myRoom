@@ -46,6 +46,5 @@
 
 	<modules>
 		<module>p-frontend</module>
-		<module>p-fronted</module>
 	</modules>
 </project>

@@ -17,7 +17,6 @@ ts.goto(random.randint(-180, 180), -200)
 
 scoreT = t.Turtle() # 점수
 score=0
-speed=10
 
 def turn_right():
     t.setheading(0)
@@ -30,15 +29,20 @@ def turn_left():
 
 def turn_down():
     t.setheading(270)
+    
+def click_spacebar():
+    global score
+    if(score>0):
+        t.forward(40)
+        score-=1
+        scoreT.clear()
 
 def play(): # 게임을 실제로 플레이하는 함수
     
     global score
-    global speed
-    
     
     scoreT.write(str(score))
-    t.forward(speed) # 주인공 거북이가 10만큼 앞으로 이동합니다.
+    t.forward(10) # 주인공 거북이가 10만큼 앞으로 이동합니다.
     ang = te.towards(t.pos())
     te.setheading(ang) # 악당 거북이가 주인공 거북이를 바라보게 합니다.
     te.forward(9) # 악당 거북이가 9만큼 앞으로 이동합니다.
@@ -46,7 +50,6 @@ def play(): # 게임을 실제로 플레이하는 함수
     if t.distance(ts) < 12: # 주인공과 먹이의 거리가 12보다 작으면(가까우면)
         scoreT.clear()
         score+=1
-        speed+=1
         star_x = random.randint(-230, 230)
         star_y = random.randint(-230, 230)
         ts.goto(star_x, star_y) # 먹이를 다른 곳으로 옮깁니다.
@@ -68,7 +71,9 @@ t.onkeypress(turn_right, "Right")
 t.onkeypress(turn_up, "Up")
 t.onkeypress(turn_left, "Left")
 t.onkeypress(turn_down, "Down")
+t.onkeypress(click_spacebar, "space")
 t.listen()
+
 
 scoreT.up()
 scoreT.goto(-230, 230)

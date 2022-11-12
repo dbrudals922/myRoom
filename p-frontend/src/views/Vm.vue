@@ -14,7 +14,7 @@
       </div>-->
       <button @click="startProgress" :disabled="newValue>=100">물어본사람~ 궁금한사람~~</button>
     </div>
-    
+
 
 
     <SampleDialog @close="closeModal" v-if="modal" maxWidth=500 transition="custom-from-bottom-transition">

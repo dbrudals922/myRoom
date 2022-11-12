@@ -1,43 +1,45 @@
 <template>
   <div class="container-fluid py-4">
     <div class="page-header min-height-300 border-radius-xl mt-4" style="
-        background-image: url('https://health.chosun.com/site/data/img_dir/2022/06/20/2022062001930_0.jpg');
+      background-image: url('https://health.chosun.com/site/data/img_dir/2022/06/20/2022062001930_0.jpg');
       ">
       <span class="mask bg-gradient-light opacity-6"></span>
     </div>
+    
     <div class="card card-body mx-3 mx-md-4 mt-n6">
       <div class="row" style="margin: 2%;">
-        <!--
-          <div class="col-12">
-              <h3>Login</h3>
+        <h3>Login</h3>
+          <div class="col-12" style="margin: 5px;">
               <select v-model="localselected">
                 <option v-for="option in localOptions" :value="option.value">
                   {{ option.text }}
                 </option>
               </select>
-
-              <div>Selected: {{ localselected }}</div>3
+                <!-- <div>Selected: {{ localselected }}</div> -->
           </div>
-          <div class="col-12">
+
+          <div class="col-12" style="margin: 5px;">
               <select v-model="ageselected">
                 <option v-for="option in ageOptions" :value="option.value">
                   {{ option.text }}
                 </option>
               </select>
-  
-              <div>Selected: {{ ageselected }}</div>
+              <!-- <div>Selected: {{ ageselected }}</div> -->
+
           </div>
-          <div class="col-12">
+          <div class="col-12" style="margin: 5px;">
             <select v-model="selected">
               <option v-for="option in Options" :value="option.value">
                 {{ option.text }}
               </option>
             </select>
           </div>
+          
+          <Button @click="clicked">다음</Button>
+          <!-- <div>Selected: {{ selected }}</div> -->
 
-          <div>Selected: {{ selected }}</div>
--->
-
+      </div>
+      <div class="row" style="margin: 2%; display:none">
         <div class="col-12">
           <div>
             <paginated-list :list-array="pageArray" :pageSize="1" />
@@ -99,15 +101,14 @@ export default {
         { text: '경남', value: '48' },
         { text: '제주', value: '49' },
       ],
-      ageselected: 'a',
+      ageselected: '1',
       ageOptions: [
-        { text: "10대 미만", value: 'a' },
-        { text: "10대", value: 'b' },
-        { text: "20대", value: 'c' },
-        { text: "30대", value: 'd' },
-        { text: "40대", value: 'e' },
-        { text: "50대", value: 'f' },
-        { text: "60대 이상", value: 'g' },
+        { text: "10대", value: '1' },
+        { text: "20대", value: '2' },
+        { text: "30대", value: '3' },
+        { text: "40대", value: '4' },
+        { text: "50대", value: '5' },
+        { text: "60대 이상", value: '6' },
       ],
       selected: 'n',
       Options: [
@@ -124,7 +125,7 @@ export default {
   },
   methods: {
     clicked: function (e) {
-      console.log(e.target.id); // spelling
+      console.log("클릭"); // spelling
     },
     callback: function (page) {
       console.log(`Page ${page} was selected. Do something about it`);

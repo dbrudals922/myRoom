@@ -15,6 +15,7 @@
                 <Button size="lg" v-bind:id="p.type[1]" @click="nextPage" class="page-btn">{{ p.down }}</Button>
             </div>
         </div>
+
           <!--
             <div class="btn-cover">
           <button :disabled="pageNum === 0" @click="prevPage" class="btn">

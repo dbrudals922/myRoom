@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "../views/Dashboard.vue";
 // import Tables from "../views/Tables.vue";
 import Flows from "../views/Flows.vue";
-import Filters from "../views/Filters.vue";
+import Mbti from "../views/Mbti.vue";
 import Vm from "../views/Vm.vue";
 import Error from "../views/Error.vue";
 //import Billing from "../views/Billing.vue";
@@ -29,9 +29,9 @@ const routes = [
     component: Flows,
   },
   {
-    path: "/filters",
-    name: "Filters",
-    component: Filters,
+    path: "/mbti",
+    name: "Mbti",
+    component: Mbti,
   },
   {
     path: "/vm",

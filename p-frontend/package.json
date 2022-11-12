@@ -1,11 +1,11 @@
 {
-	"name": "link-frontend",
+	"name": "p-frontend",
 	"version": "1.0.5",
 	"private": true,
 	"author": "direa",
 	"description": "Link Starter",
 	"scripts": {
-		"serve": "vue-cli-service serve --open --port 8081",
+		"serve": "vue-cli-service serve --open --host localhost --port 8081",
 		"build": "vue-cli-service build",
 		"lint": "vue-cli-service lint"
 	},

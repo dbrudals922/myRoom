@@ -88,7 +88,7 @@
           url="#"
           :aria-controls="''"
           v-bind:collapse="false"
-          collapseRef="Filters"
+          collapseRef="Mbti"
           navText="MBTI"
         >
           <template v-slot:icon>

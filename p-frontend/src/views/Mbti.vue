@@ -1,13 +1,12 @@
 <template>
   <div class="container-fluid py-4">
-    <div class="page-header min-height-300 border-radius-xl mt-4" style="
-      background-image: url('https://health.chosun.com/site/data/img_dir/2022/06/20/2022062001930_0.jpg');
-      ">
+    <div class="page-header min-height-300 border-radius-xl mt-4" 
+    style="background-image: url('https://health.chosun.com/site/data/img_dir/2022/06/20/2022062001930_0.jpg');">
       <span class="mask bg-gradient-light opacity-6"></span>
     </div>
     
     <div class="card card-body mx-3 mx-md-4 mt-n6">
-      <div class="row" style="margin: 2%;">
+      <div class="row" style="margin: 2%;" v-show=!isHidden>
         <h3>Login</h3>
           <div class="col-12" style="margin: 5px;">
               <select v-model="localselected">
@@ -35,11 +34,11 @@
             </select>
           </div>
           
-          <Button @click="clicked">다음</Button>
+          <Button @click="isHidden = !isHidden">다음</Button>
           <!-- <div>Selected: {{ selected }}</div> -->
 
       </div>
-      <div class="row" style="margin: 2%; display:none">
+      <div class="row" style="margin: 2%;" v-show=isHidden>
         <div class="col-12">
           <div>
             <paginated-list :list-array="pageArray" :pageSize="1" />
@@ -81,6 +80,7 @@ export default {
   props: [],
   data() {
     return {
+      isHidden: false,
       pageArray: [],
       localselected: '11',
       localOptions: [

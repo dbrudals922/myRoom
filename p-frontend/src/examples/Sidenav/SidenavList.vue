@@ -17,6 +17,7 @@
           </template>
         </sidenav-collapse>
       </li>
+      <!--
       <li class="nav-item">
         <sidenav-collapse
           url="#"
@@ -30,7 +31,6 @@
           </template>
         </sidenav-collapse>
       </li>
-      <!-- 
       <li class="nav-item">
         <sidenav-collapse
           url="#"
@@ -96,7 +96,7 @@
           </template>
         </sidenav-collapse>
       </li>
-      
+      <!--
       <li class="nav-item">
         <sidenav-collapse
           url="#"
@@ -110,6 +110,7 @@
           </template>
         </sidenav-collapse>
       </li>
+      -->
       <li class="nav-item">
         <sidenav-collapse
           url="#"
@@ -139,7 +140,7 @@
       </li>
       -->
     </ul>
-    <div class="sidenav-footer position-absolute w-100 bottom-0">
+    <!-- <div class="sidenav-footer position-absolute w-100 bottom-0">
       <div class="mx-3">
         <a
           class="btn mt-4 w-100"
@@ -148,7 +149,7 @@
           >Flow Upload</a
         >
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>

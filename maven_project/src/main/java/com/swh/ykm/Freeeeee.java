@@ -1,23 +1,22 @@
 package com.swh.ykm;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Freeeeee {
-	public static void main(String[] args){
-		final String inflearnUrl = String.format("https://movie.naver.com/movie/bi/mi/basic.naver?code=187347");
-		Connection conn = Jsoup.connect(inflearnUrl);
+	public static void main(String[] args) {
 		try {
-			Document document = conn.get();
-			Elements Elements = document.select("div.mv_info_area > div.poster > img"); // div[class=tit3] a
-			for (int j = 0; j < Elements.size(); j++) {
-				System.out.println( Elements.get(j).attr("src"));
+			File myObj = new File("questions.js");
+			Scanner myReader = new Scanner(myObj);
+			while (myReader.hasNextLine()) {
+				String data = myReader.nextLine();
+				System.out.println(data);
 			}
-		}
-		catch(Exception e) {
-			
+			myReader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
 		}
 	}
 }

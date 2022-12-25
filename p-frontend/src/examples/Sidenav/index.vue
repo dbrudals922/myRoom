@@ -24,7 +24,7 @@
           alt="main_logo"
         /> -->
         <span class="ms-2 font-weight-bold text-white"
-          >공부나하자</span
+          >음..</span
         >
       </a>
     </div>

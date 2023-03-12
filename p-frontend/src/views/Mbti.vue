@@ -1,76 +1,73 @@
-<style>
-.form-select-lg {
-  margin: 10px;
-}
-
-.info {
-  margin: 10px;
-  margin-bottom: 10%;
-  text-align: center;
-}
-</style>
-
 <template>
-  <div class="container-fluid py-4">
-    <div class="page-header min-height-300 border-radius-xl mt-4"
+  <div class="container-fluid py-5">
+    <!-- <div class="page-header min-height-300 border-radius-xl mt-4" v-if="isHidden1"
       style="background-image: url('https://health.chosun.com/site/data/img_dir/2022/06/20/2022062001930_0.jpg');">
-      <span class="mask bg-gradient-light opacity-6"></span>
+      <span class="mask bg-gradient-light opacity-2"></span>
+    </div> -->
+
+    <div class="mt-5 mx-md-10">
+      <h5 style="text-align:left"><a href="http://localhost:8080/mbti">abcd</a></h5>
     </div>
 
-    <div class="card card-body mx-3 mx-md-4 mt-n6">
+    <div class="card card-body mx-auto mx-md-9">
 
-      <div class="row" style="margin: 0 auto;" v-if=isHidden1>
-
-        <h3 style="text-align: center;">Info</h3>
-
-        <!-- 지역 -->
+      <!-- info -->
+      <div class="row" style="margin-top: 4%" v-if="isHidden1">
         <div class="col-3 info" style="width: 100%;">
-          <select class="form-select-lg" v-model="localselected">
-            <option v-for="option in localOptions" :value="option.value">
-              {{ option.text }}
-            </option>
-          </select>
 
-          <!-- 나이 -->
-          <select class="form-select-lg" v-model="ageselected">
-            <option v-for="option in ageOptions" :value="option.value">
-              {{ option.text }}
-            </option>
-          </select>
 
-          <!-- 성별 -->
-          <select class="form-select-lg" v-model="selected">
-            <option v-for="option in Options" :value="option.value">
-              {{ option.text }}
-            </option>
-          </select>
+          <div class="col">
+
+            <!-- 지역 -->
+            <h3 style="text-align: center;">Info</h3>
+            <select class="form-select-lg" v-model="localselected">
+              <option v-for="option in localOptions" :value="option.code">
+                {{ option.name }}
+              </option>
+            </select>
+
+            <!-- 성별 -->
+            <select class="form-select-lg" v-model="selected">
+              <option v-for="option in Options" :value="option.value">
+                {{ option.text }}
+              </option>
+            </select>
+
+            <!-- 나이 -->
+            <h5>age</h5>
+            <vue-number-input v-model="age" :model-value="20" size="small" :min="1" :max="99" inline center
+              controls></vue-number-input>
+
+          </div>
+
+          <Button @click="clicked()" class="w-50" style="margin: 5%" color="outline-secondary">다음</Button>
         </div>
-
-        <Button @click="clicked()" style="margin: 5px;">다음</Button>
-
       </div>
 
+
       <!-- 설문지 -->
-      <div class="row" style="margin: 2%;" v-if=isHidden2>
+      <div class="row" style="margin: 10%;" v-if="isHidden2">
         <div class="col-12">
           <div>
-            <PaginatedList @result="result" :list-array="pageArray" :pageSize="1" />
+            <PaginatedList @result="result" :list-array="questions" :pageSize="1" />
           </div>
         </div>
       </div>
 
       <!-- 결과창 -->
-      <div class="row" v-if="!isHidden1 && !isHidden2">
-        <h1>결과</h1>
+      <div class="row result" v-if="!isHidden1 && !isHidden2">
+        <h3>{{ mbti_result }}</h3>
+        <BarChart :resultData=[re] />
       </div>
+
+
     </div>
 
-
+    <div id="chart">
+      <apexchart type="line" height="150" ref="chart" :options="chartOptions" :series="series"></apexchart>
+    </div>
 
     <SampleDialog @close="closeModal" v-if="modal" maxWidth=600 transition="custom-from-bottom-transition">
-      <template v-slot:header>
-        {{ messageTitle }}
-      </template>
 
       <!-- default 슬롯 콘텐츠 -->
       <json-viewer :value="message" :expand-depth=5 boxed expanded show-double-quotes>
@@ -88,13 +85,17 @@
 import axios from 'axios';
 import JsonViewer from 'vue-json-viewer';
 import SampleDialog from "../examples/SampleDialog.vue";
-import Textarea from "../components/MaterialTextarea.vue";
-import Radio from "../components/MaterialRadio.vue";
-import Checkbox from "../components/MaterialCheckbox.vue";
 import Button from "../components/MaterialButton.vue";
+import VueNumberInput from '@chenfengyuan/vue-number-input';
 
-import questions from "./questions.js";
 import PaginatedList from './PaginatedList';
+
+import BarChart from "./BarChart.vue";
+import TimeChart from "./TimelineChart.vue";
+
+import VueApexCharts from "vue3-apexcharts";
+
+
 
 export default {
   name: "Filters",
@@ -103,112 +104,245 @@ export default {
     return {
       isHidden1: true,
       isHidden2: false,
-      info: '',
       mbti_result: '',
       modal: false,
-      pageArray: [],
-      MBTI: '',
+      todayCount: 0,
+      re: {},
+      textMessage: null,
+      mbti: ["E", "I", "S", "N", "T", "F", "J", "P"],
+      connection: null,
       localselected: '11',
-      localOptions: [
-        { text: '서울', value: '11' },
-        { text: '부산', value: '26' },
-        { text: '대구', value: '27' },
-        { text: '인천', value: '28' },
-        { text: '광주', value: '29' },
-        { text: '대전', value: '30' },
-        { text: '울산', value: '31' },
-        { text: '경기', value: '41' },
-        { text: '강원', value: '42' },
-        { text: '충북', value: '43' },
-        { text: '충남', value: '44' },
-        { text: '전북', value: '45' },
-        { text: '전남', value: '46' },
-        { text: '경북', value: '47' },
-        { text: '경남', value: '48' },
-        { text: '제주', value: '49' },
-        { text: '선택 안함', value: '00' }
-      ],
-      ageselected: '1',
-      ageOptions: [
-        { text: "10대", value: '1' },
-        { text: "20대", value: '2' },
-        { text: "30대", value: '3' },
-        { text: "40대", value: '4' },
-        { text: "50대", value: '5' },
-        { text: "60대 이상", value: '6' },
-      ],
-      selected: '1',
+      localOptions: undefined,
+      age: null,
+      selected: 'N',
       Options: [
-        { text: "남성", value: '1' },
-        { text: "여성", value: '2' },
-        { text: "선택 안함", value: '0' }
+        { text: "남성", value: 'M' },
+        { text: "여성", value: 'W' },
+        { text: "선택 안함", value: 'N' }
       ],
-      questions: questions // import js file
+      questions: null, // import js file
+
+
+      // chart
+      socket: null,
+      d: [],
+      series: [
+        {
+          name: "Result",
+          data: []
+        },
+      ],
+      chartOptions: {
+        chart: {
+          id: 'realtime',
+          height: 350,
+          type: 'line',
+          animations: {
+            enabled: true,
+            easing: 'linear',
+            dynamicAnimation: {
+              speed: 1000
+            }
+          },
+          toolbar: {
+            show: false
+          },
+          zoom: {
+            enabled: false
+          }
+        },
+        colors:['#B5BAFF'],
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth'
+        },
+        // title: {
+        //   text: 'Dynamic Updating Chart',
+        //   align: 'left'
+        // },
+        markers: {
+          size: 0
+        },
+        xaxis: {
+          labels: {
+            datetimeUTC: false,
+          },
+          type: "datetime",
+          range: 100000000
+        },
+        yaxis: {
+          max: 5,
+          labels:{
+            show: false
+          },
+        },
+        legend: {
+          show: false
+        },
+        tooltip: {
+          enabled: true,
+          x:{
+            show: true,
+            format: 'MM-dd HH:mm:00',
+            formatter: undefined,
+          }
+        }
+      },
     };
   },
   created() {
-    // console.log(questions);
-    this.pageArray = questions;
+    this.selectLocal();
+    this.selectQuetsions();
+
+  },
+  mounted: function () {
+
+    this.wsconnect();
+
+    // every 60 seconds, we reset the data to prevent memory leaks
+    window.setInterval(() => {
+      this.resetData()
+    })
   },
   methods: {
+    
+    wsconnect() {
+      console.log("Starting connection to WebSocket Server");
+      // this.connection = new WebSocket("ws://192.168.0.9:8887");
+      this.socket = new WebSocket("ws://localhost:8081/ws/live");
+
+      this.socket.onmessage = (event) => {
+        this.d.push(JSON.parse(event.data).code);
+        let series = [
+          { 
+            name: "Result",
+            data: this.d.slice(-30)
+          },
+        ];
+        this.series = series;
+
+        // console.log(this.series);
+      }
+
+      this.socket.onopen = (event) => {
+        // console.log(event);
+        console.log("Successfully connected to the echo websocket server...");
+        // this.socket.send("hi");
+      }
+    },
+    resetData(){
+      this.d = this.d.slice(-30);
+    },
+
+
+    //=======================================
+
     clicked() {
       this.isHidden1 = !this.isHidden1;
       this.isHidden2 = !this.isHidden2;
-      // this.info = [
-      //   { 'local': this.localselected },
-      //   { 'age': this.ageselected },
-      //   { 'sex': this.selected }
-      // ];
-      // console.log(this.info);
-      this.info = this.localselected + this.ageselected + this.selected;
-      console.log(this.info);
-      // console.log(this.localselected + this.ageselected + this.selected);
     },
-
     result(e) {
       // 결과 계산
-      var r = e;
       this.isHidden2 = !this.isHidden2;
+      var n;
+      for (n = 0; n < this.mbti.length - 1; n += 2) {
+        this.re[this.mbti[n]] = e.split(this.mbti[n]).length - 1;
+        this.re[this.mbti[n + 1]] = e.split(this.mbti[n + 1]).length - 1;
+      }
 
-      this.mbti_result += r.split("E").length - 1 > r.split("I").length - 1 ? "E" : "I";
-      this.mbti_result += r.split("S").length - 1 > r.split("N").length - 1 ? "S" : "N";
-      this.mbti_result += r.split("T").length - 1 > r.split("P").length - 1 ? "T" : "F";
-      this.mbti_result += r.split("J").length - 1 > r.split("P").length - 1 ? "J" : "P";
+      var m;
+      for (m = 0; m < this.mbti.length - 1; m += 2) {
+        this.mbti_result += this.re[this.mbti[m]] > this.re[this.mbti[m + 1]] ? this.mbti[m] : this.mbti[m + 1];
+      }
 
-      console.log(this.mbti_result);
+      // 결과 전송(DB)
+      axios.post('/v1/result', [this.localselected, this.age, this.selected, this.mbti_result, e])
+        .then(function (response) {
+          return response;
+        })
+        .catch(function (error) {
+          return error;
+        });
 
-      axios.get('/v1/member')
+      this.socket.send(new Date().getTime());
+      // this.insertQuestions();
+    },
+
+    selectData() {
+      axios.get('/v1/result')
         .then(function (response) {
           // 성공한 경우 실행
-          console.log(response);
+          return response;
         })
         .catch(function (error) {
           // 에러인 경우 실행
-          console.log(error);
+          return error;
         })
         .then(function () {
           // 항상 실행
         });
+    },
 
-
-      axios.post('/v1/result', [this.info, e])
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
+    selectLocal() {
+      axios.get("/v1/local")
+        .then((response) => {
+          this.localOptions = response.data.slice(0, -1);
+          return response;
+        }).catch(function (error) {
+          // 오류발생시 실행
+          // console.log(error);
+          return error;
         });
+    },
 
+    insertQuestions() {
+      var step;
+      for (step = 0; step < this.questions.length; step++) {
+        axios.post('/v1/insertQuestion', [questions[step].title, questions[step].type, questions[step].s1, questions[step].s2])
+          .then(function (response) {
+            return response;
+          })
+          .catch(function (error) {
+            return error;
+          });
+      }
+    },
+
+    selectQuetsions() {
+      axios.get('/v1/getQuestions')
+        .then((response) => {
+          this.questions = response.data;
+        }).catch(function (error) {
+          return error;
+        })
     }
   },
   components: {
     JsonViewer,
     SampleDialog,
-    Textarea,
-    Checkbox,
-    Radio,
     Button,
     PaginatedList,
+    VueNumberInput,
+    BarChart,
+    apexchart: VueApexCharts,
   },
 };
 </script>
+
+<style>
+.form-select-lg {
+  margin: 10px;
+}
+
+.info {
+  margin: 10px;
+  margin-bottom: 10%;
+  text-align: center;
+}
+
+.result {
+  width: 60%;
+}
+</style>

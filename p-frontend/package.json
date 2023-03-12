@@ -10,25 +10,30 @@
 		"lint": "vue-cli-service lint"
 	},
 	"dependencies": {
+		"@chenfengyuan/vue-number-input": "^2.0.1",
 		"@popperjs/core": "2.10.2",
 		"axios": "^0.27.2",
 		"bootstrap": "^5.1.3",
-		"chart.js": "3.6.0",
+		"chart.js": "^4.1.2",
+		"chartjs-plugin-datalabels": "^2.2.0",
 		"core-js": "^3.8.3",
 		"gitart-vue-dialog": "^2.4.0",
 		"lightvue": "^1.5.1",
 		"mysql": "^2.18.1",
+		"sockjs-client": "^1.6.1",
 		"stylus": "^0.59.0",
 		"stylus-loader": "^7.1.0",
-		"vue": "^3.2.37",
+		"vue": "^3.2.45",
 		"vue-json-viewer": "^3.0.4",
 		"vue-pagination-2": "^3.1.0",
 		"vue-progress-path": "^0.0.2",
 		"vue-router": "^4.0.13",
 		"vue-select": "^4.0.0-beta.6",
 		"vue-step-progress": "^1.0.2",
+		"vue3-apexcharts": "^1.4.1",
 		"vuetify": "^2.6.12",
-		"vuex": "4.0.2"
+		"vuex": "4.0.2",
+		"webstomp-client": "^1.2.6"
 	},
 	"devDependencies": {
 		"@vue/cli-plugin-babel": "^5.0.8",

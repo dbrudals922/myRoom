@@ -3,6 +3,7 @@
     <canvas :id="id" class="chart-canvas" :height="height"></canvas>
   </div>
 </template>
+
 <script>
 import Chart from "chart.js/auto";
 

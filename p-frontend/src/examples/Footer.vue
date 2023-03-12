@@ -9,12 +9,11 @@
           >
             ©
             {{ new Date().getFullYear() }}
-            <i class="fa fa-heart"></i>
             <a
               href="http://www.google.com/"
               class="font-weight-bold"
               target="_blank"
-              >km</a
+              >아자아자</a
             >
           </div>
         </div>

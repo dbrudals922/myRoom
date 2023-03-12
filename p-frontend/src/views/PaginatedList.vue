@@ -3,19 +3,19 @@
     <div class="btn-cover" style="margin-bottom: 20px;">
       <div style="width: 100%" v-if="value < 100">
         <div class="progress" style="height: 30px;">
-          <div class="progress-bar" role="progressbar" :style="progressStyle" aria-valuenow="{{this.value}}"
+          <div class="progress-bar bg-secondary" role="progressbar" :style="progressStyle" aria-valuenow="{{this.value}}"
             aria-valuemin="0" aria-valuemax="100">{{ pageNum }}/{{ pageMax }}</div>
         </div>
       </div>
     </div>
 
     <div v-for="p in paginatedData" :key="p.id" class="col-12" style="text-align: center;">
-      <h4 style="padding-bottom: 25px;">{{ p.title }}</h4>
+      <h5 style="padding-bottom: 25px;">{{ p.title }}</h5>
       <div style="padding-bottom: 3mm; text-align: center;">
-        <Button size="lg" v-bind:id="p.type[0]" @click="nextPage($event)" class="page-btn">{{ p.s1 }}</Button>
+        <Button size="lg" v-bind:id="p.type[0]" @click="nextPage($event)" class="page-btn" color="outline-dark">{{ p.s1 }}</Button>
       </div>
       <div style="padding-bottom: 1mm; text-align: center;">
-        <Button size="lg" v-bind:id="p.type[1]" @click="nextPage" class="page-btn">{{ p.s2 }}</Button>
+        <Button size="lg" v-bind:id="p.type[1]" @click="nextPage" class="page-btn" color="outline-dark">{{ p.s2 }}</Button>
       </div>
     </div>
 
@@ -36,19 +36,20 @@
 
 <script>
 import Button from "../components/MaterialButton.vue";
-import questions from "./questions.js";
+// import questions from "./questions.js";
 
 export default {
   name: 'paginated-list',
   data() {
     return {
       pageNum: 0,
-      pageMax: questions.length,
+      pageMax: 0,
       value: 0,
+      questions: 0,
       progressStyle: {
         width: '0%',
         height: '30px',
-        'border-radius': '10px'
+        'border-radius': '10px',
       },
       mbti_count: '',
     }
@@ -64,24 +65,28 @@ export default {
       default: 10
     }
   },
+  created(){
+    this.questions=this.listArray;
+    this.pageMax=this.listArray.length;
+  },
   methods: {
     nextPage: function (e) {
+      this.mbti_count += e.target.id;
+
       this.pageNum += 1;
 
-      if(this.pageNum==questions.length){
-        this.$emit('result', this.mbti_count);
-      }
-
       // progressbar
-      this.value = Math.round((this.pageNum / questions.length) * 100);
+      this.value = Math.round((this.pageNum / this.questions.length) * 100);
       this.progressStyle = {
         width: this.value + '%',
         height: '30px',
         'border-radius': '10px'
       };
 
-      this.mbti_count+=e.target.id;
-
+      // send result
+      if (this.pageNum == this.questions.length) {
+        this.$emit('result', this.mbti_count);
+      }
     },
     prevPage() {
       this.pageNum -= 1;
@@ -102,13 +107,13 @@ export default {
     },
     paginatedData() {
       const start = this.pageNum * this.pageSize,
-      end = start + this.pageSize;
+        end = start + this.pageSize;
       return this.listArray.slice(start, end);
     }
   },
   components: {
     Button,
-  },  
+  },
 }
 </script>
   
